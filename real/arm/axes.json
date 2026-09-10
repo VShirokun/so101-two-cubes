@@ -1,0 +1,20 @@
+{
+ "shoulder_pan": {
+  "sign": 1
+ },
+ "shoulder_lift": {
+  "sign": 1
+ },
+ "elbow_flex": {
+  "sign": 1
+ },
+ "wrist_flex": {
+  "sign": 1
+ },
+ "wrist_roll": {
+  "sign": 1
+ },
+ "gripper": {
+  "sign": 1
+ }
+}

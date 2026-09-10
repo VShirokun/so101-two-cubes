@@ -1,0 +1,2531 @@
+{
+  "policy": "/srv/data/vshirokun/lerobot-runs/lift-sim-10k/checkpoint-10000",
+  "type": "gr00t-n1.7",
+  "task_kind": "lift",
+  "attempts": 100,
+  "success": 86,
+  "lifted": 86,
+  "wrong_cube": 0,
+  "carry": true,
+  "note": "успех = названный кубик выше 0.05 м 15 тактов подряд, чужой не поднят",
+  "seed": 777,
+  "seconds_limit": 12.0,
+  "task": "both",
+  "task_texts": {
+    "red": "Подними красный кубик.",
+    "green": "Подними зелёный кубик."
+  },
+  "checkpoint_step": "checkpoint-10000",
+  "img_size": [
+    480,
+    640
+  ],
+  "random_yaw": true,
+  "criteria": {
+    "lift_z": 0.05,
+    "hold_steps": 15,
+    "other_z": 0.03
+  },
+  "trials": [
+    {
+      "attempt": 1,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0964,
+        0.2586,
+        0.022
+      ],
+      "other_xyz": [
+        0.262,
+        0.1391,
+        0.014
+      ],
+      "z_max": 0.0826,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 198,
+      "seconds": 0.9
+    },
+    {
+      "attempt": 2,
+      "asked": "green",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.261,
+        0.0487,
+        0.0166
+      ],
+      "other_xyz": [
+        0.1969,
+        -0.1002,
+        0.014
+      ],
+      "z_max": 0.0594,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.7
+    },
+    {
+      "attempt": 3,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0926,
+        0.2616,
+        0.022
+      ],
+      "other_xyz": [
+        0.2406,
+        -0.1398,
+        0.014
+      ],
+      "z_max": 0.0774,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 424,
+      "seconds": 1.7
+    },
+    {
+      "attempt": 4,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1038,
+        0.2618,
+        0.022
+      ],
+      "other_xyz": [
+        0.214,
+        -0.099,
+        0.014
+      ],
+      "z_max": 0.0771,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 272,
+      "seconds": 1.0
+    },
+    {
+      "attempt": 5,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1035,
+        0.247,
+        0.022
+      ],
+      "other_xyz": [
+        0.2984,
+        -0.1287,
+        0.014
+      ],
+      "z_max": 0.082,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 405,
+      "seconds": 1.7
+    },
+    {
+      "attempt": 6,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0901,
+        0.2543,
+        0.022
+      ],
+      "other_xyz": [
+        0.3085,
+        -0.1331,
+        0.014
+      ],
+      "z_max": 0.0815,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 359,
+      "seconds": 1.4
+    },
+    {
+      "attempt": 7,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0892,
+        0.2543,
+        0.022
+      ],
+      "other_xyz": [
+        0.2408,
+        -0.1424,
+        0.014
+      ],
+      "z_max": 0.089,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 443,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 8,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0986,
+        0.2492,
+        0.022
+      ],
+      "other_xyz": [
+        0.2467,
+        0.1435,
+        0.014
+      ],
+      "z_max": 0.0827,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 433,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 9,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1079,
+        0.257,
+        0.022
+      ],
+      "other_xyz": [
+        0.1997,
+        0.001,
+        0.014
+      ],
+      "z_max": 0.0815,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 279,
+      "seconds": 1.1
+    },
+    {
+      "attempt": 10,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0885,
+        0.2555,
+        0.022
+      ],
+      "other_xyz": [
+        0.2491,
+        0.0392,
+        0.014
+      ],
+      "z_max": 0.088,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 181,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 11,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0883,
+        0.2582,
+        0.022
+      ],
+      "other_xyz": [
+        0.3053,
+        0.1043,
+        0.014
+      ],
+      "z_max": 0.0873,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 297,
+      "seconds": 1.1
+    },
+    {
+      "attempt": 12,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0861,
+        0.2583,
+        0.022
+      ],
+      "other_xyz": [
+        0.2564,
+        -0.0111,
+        0.014
+      ],
+      "z_max": 0.072,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 183,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 13,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0891,
+        0.2577,
+        0.022
+      ],
+      "other_xyz": [
+        0.2369,
+        -0.1474,
+        0.014
+      ],
+      "z_max": 0.08,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 186,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 14,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.089,
+        0.2669,
+        0.022
+      ],
+      "other_xyz": [
+        0.2804,
+        -0.1337,
+        0.014
+      ],
+      "z_max": 0.0801,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 280,
+      "seconds": 1.1
+    },
+    {
+      "attempt": 15,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.076,
+        0.2742,
+        0.022
+      ],
+      "other_xyz": [
+        0.2551,
+        -0.0443,
+        0.014
+      ],
+      "z_max": 0.0782,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 354,
+      "seconds": 1.4
+    },
+    {
+      "attempt": 16,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1003,
+        0.2551,
+        0.022
+      ],
+      "other_xyz": [
+        0.21,
+        -0.0123,
+        0.014
+      ],
+      "z_max": 0.0756,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 179,
+      "seconds": 0.5
+    },
+    {
+      "attempt": 17,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0913,
+        0.2532,
+        0.022
+      ],
+      "other_xyz": [
+        0.2454,
+        0.0103,
+        0.014
+      ],
+      "z_max": 0.0818,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 184,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 18,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0911,
+        0.2506,
+        0.022
+      ],
+      "other_xyz": [
+        0.2109,
+        -0.1028,
+        0.014
+      ],
+      "z_max": 0.0766,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 276,
+      "seconds": 1.0
+    },
+    {
+      "attempt": 19,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0908,
+        0.26,
+        0.022
+      ],
+      "other_xyz": [
+        0.2108,
+        -0.0403,
+        0.014
+      ],
+      "z_max": 0.0908,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 231,
+      "seconds": 0.8
+    },
+    {
+      "attempt": 20,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0901,
+        0.2608,
+        0.022
+      ],
+      "other_xyz": [
+        0.2532,
+        -0.0564,
+        0.014
+      ],
+      "z_max": 0.0889,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 267,
+      "seconds": 1.0
+    },
+    {
+      "attempt": 21,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0874,
+        0.2703,
+        0.022
+      ],
+      "other_xyz": [
+        0.2915,
+        0.0654,
+        0.014
+      ],
+      "z_max": 0.087,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 234,
+      "seconds": 0.8
+    },
+    {
+      "attempt": 22,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0886,
+        0.256,
+        0.022
+      ],
+      "other_xyz": [
+        0.2448,
+        0.0499,
+        0.014
+      ],
+      "z_max": 0.0791,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 191,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 23,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0871,
+        0.2552,
+        0.022
+      ],
+      "other_xyz": [
+        0.235,
+        0.0922,
+        0.014
+      ],
+      "z_max": 0.0819,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 281,
+      "seconds": 1.1
+    },
+    {
+      "attempt": 24,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0923,
+        0.2619,
+        0.022
+      ],
+      "other_xyz": [
+        0.2513,
+        -0.1019,
+        0.014
+      ],
+      "z_max": 0.0811,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 183,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 25,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0978,
+        0.2529,
+        0.022
+      ],
+      "other_xyz": [
+        0.2317,
+        -0.1261,
+        0.014
+      ],
+      "z_max": 0.0793,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 196,
+      "seconds": 0.7
+    },
+    {
+      "attempt": 26,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0898,
+        0.2554,
+        0.022
+      ],
+      "other_xyz": [
+        0.3038,
+        0.025,
+        0.014
+      ],
+      "z_max": 0.0852,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 360,
+      "seconds": 1.5
+    },
+    {
+      "attempt": 27,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0897,
+        0.2559,
+        0.022
+      ],
+      "other_xyz": [
+        0.1956,
+        -0.0034,
+        0.014
+      ],
+      "z_max": 0.0815,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 214,
+      "seconds": 0.8
+    },
+    {
+      "attempt": 28,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0944,
+        0.2628,
+        0.022
+      ],
+      "other_xyz": [
+        0.1916,
+        0.1156,
+        0.014
+      ],
+      "z_max": 0.0816,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 366,
+      "seconds": 1.4
+    },
+    {
+      "attempt": 29,
+      "asked": "red",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.2544,
+        -0.1266,
+        0.014
+      ],
+      "other_xyz": [
+        0.2149,
+        -0.0038,
+        0.014
+      ],
+      "z_max": 0.0566,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.7
+    },
+    {
+      "attempt": 30,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0887,
+        0.255,
+        0.022
+      ],
+      "other_xyz": [
+        0.2687,
+        0.1149,
+        0.014
+      ],
+      "z_max": 0.0853,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 198,
+      "seconds": 0.7
+    },
+    {
+      "attempt": 31,
+      "asked": "red",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1763,
+        -0.1096,
+        0.0671
+      ],
+      "other_xyz": [
+        0.2998,
+        0.0621,
+        0.014
+      ],
+      "z_max": 0.0671,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 32,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.089,
+        0.2575,
+        0.022
+      ],
+      "other_xyz": [
+        0.3078,
+        0.1372,
+        0.014
+      ],
+      "z_max": 0.0782,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 193,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 33,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0883,
+        0.2559,
+        0.022
+      ],
+      "other_xyz": [
+        0.2524,
+        -0.0635,
+        0.014
+      ],
+      "z_max": 0.0832,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 312,
+      "seconds": 1.2
+    },
+    {
+      "attempt": 34,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0866,
+        0.261,
+        0.022
+      ],
+      "other_xyz": [
+        0.204,
+        -0.1075,
+        0.014
+      ],
+      "z_max": 0.0891,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 346,
+      "seconds": 1.4
+    },
+    {
+      "attempt": 35,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.087,
+        0.2602,
+        0.022
+      ],
+      "other_xyz": [
+        0.1988,
+        -0.1213,
+        0.014
+      ],
+      "z_max": 0.0789,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 404,
+      "seconds": 1.7
+    },
+    {
+      "attempt": 36,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0874,
+        0.2545,
+        0.022
+      ],
+      "other_xyz": [
+        0.2095,
+        -0.0299,
+        0.014
+      ],
+      "z_max": 0.0817,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 271,
+      "seconds": 1.0
+    },
+    {
+      "attempt": 37,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1005,
+        0.2481,
+        0.022
+      ],
+      "other_xyz": [
+        0.201,
+        0.1334,
+        0.014
+      ],
+      "z_max": 0.0863,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 225,
+      "seconds": 0.8
+    },
+    {
+      "attempt": 38,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.099,
+        0.2807,
+        0.022
+      ],
+      "other_xyz": [
+        0.2793,
+        0.1317,
+        0.014
+      ],
+      "z_max": 0.0829,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 188,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 39,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0941,
+        0.2503,
+        0.022
+      ],
+      "other_xyz": [
+        0.2454,
+        -0.0862,
+        0.014
+      ],
+      "z_max": 0.0816,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 457,
+      "seconds": 1.9
+    },
+    {
+      "attempt": 40,
+      "asked": "green",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1741,
+        -0.0154,
+        0.014
+      ],
+      "other_xyz": [
+        0.2008,
+        -0.0873,
+        0.014
+      ],
+      "z_max": 0.0473,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.7
+    },
+    {
+      "attempt": 41,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1017,
+        0.2446,
+        0.022
+      ],
+      "other_xyz": [
+        0.2658,
+        -0.1317,
+        0.014
+      ],
+      "z_max": 0.0834,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 197,
+      "seconds": 0.7
+    },
+    {
+      "attempt": 42,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0895,
+        0.2547,
+        0.022
+      ],
+      "other_xyz": [
+        0.2055,
+        -0.1177,
+        0.014
+      ],
+      "z_max": 0.0894,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 200,
+      "seconds": 0.7
+    },
+    {
+      "attempt": 43,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0851,
+        0.2662,
+        0.022
+      ],
+      "other_xyz": [
+        0.2493,
+        0.1436,
+        0.014
+      ],
+      "z_max": 0.0924,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 393,
+      "seconds": 1.6
+    },
+    {
+      "attempt": 44,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0898,
+        0.252,
+        0.022
+      ],
+      "other_xyz": [
+        0.1989,
+        -0.0329,
+        0.014
+      ],
+      "z_max": 0.087,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 267,
+      "seconds": 1.0
+    },
+    {
+      "attempt": 45,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.099,
+        0.2482,
+        0.022
+      ],
+      "other_xyz": [
+        0.2652,
+        -0.0008,
+        0.014
+      ],
+      "z_max": 0.083,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 250,
+      "seconds": 0.9
+    },
+    {
+      "attempt": 46,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0961,
+        0.2513,
+        0.022
+      ],
+      "other_xyz": [
+        0.2721,
+        0.0733,
+        0.014
+      ],
+      "z_max": 0.084,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 354,
+      "seconds": 1.4
+    },
+    {
+      "attempt": 47,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0948,
+        0.2496,
+        0.022
+      ],
+      "other_xyz": [
+        0.2031,
+        -0.0525,
+        0.014
+      ],
+      "z_max": 0.0785,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 263,
+      "seconds": 1.0
+    },
+    {
+      "attempt": 48,
+      "asked": "green",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.2225,
+        -0.0427,
+        0.014
+      ],
+      "other_xyz": [
+        0.2944,
+        -0.1306,
+        0.014
+      ],
+      "z_max": 0.0572,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.9
+    },
+    {
+      "attempt": 49,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0947,
+        0.2589,
+        0.022
+      ],
+      "other_xyz": [
+        0.199,
+        -0.1441,
+        0.014
+      ],
+      "z_max": 0.0827,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 223,
+      "seconds": 0.8
+    },
+    {
+      "attempt": 50,
+      "asked": "green",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.2423,
+        0.1362,
+        0.014
+      ],
+      "other_xyz": [
+        0.2706,
+        0.0094,
+        0.014
+      ],
+      "z_max": 0.0567,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 51,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0969,
+        0.2502,
+        0.022
+      ],
+      "other_xyz": [
+        0.2051,
+        -0.1478,
+        0.014
+      ],
+      "z_max": 0.0841,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 295,
+      "seconds": 1.2
+    },
+    {
+      "attempt": 52,
+      "asked": "green",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1579,
+        -0.0567,
+        0.0791
+      ],
+      "other_xyz": [
+        0.2121,
+        -0.132,
+        0.014
+      ],
+      "z_max": 0.0793,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 53,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0875,
+        0.2544,
+        0.022
+      ],
+      "other_xyz": [
+        0.294,
+        0.135,
+        0.014
+      ],
+      "z_max": 0.0866,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 429,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 54,
+      "asked": "green",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.2006,
+        0.0241,
+        0.014
+      ],
+      "other_xyz": [
+        0.2266,
+        -0.0911,
+        0.014
+      ],
+      "z_max": 0.0603,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 55,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0937,
+        0.2542,
+        0.022
+      ],
+      "other_xyz": [
+        0.2888,
+        -0.0332,
+        0.014
+      ],
+      "z_max": 0.0823,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 353,
+      "seconds": 1.4
+    },
+    {
+      "attempt": 56,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0904,
+        0.2545,
+        0.022
+      ],
+      "other_xyz": [
+        0.2636,
+        -0.0779,
+        0.014
+      ],
+      "z_max": 0.0857,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 269,
+      "seconds": 1.0
+    },
+    {
+      "attempt": 57,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0863,
+        0.2605,
+        0.022
+      ],
+      "other_xyz": [
+        0.2094,
+        -0.1059,
+        0.014
+      ],
+      "z_max": 0.0874,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 218,
+      "seconds": 0.8
+    },
+    {
+      "attempt": 58,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1019,
+        0.2576,
+        0.022
+      ],
+      "other_xyz": [
+        0.2276,
+        0.1385,
+        0.014
+      ],
+      "z_max": 0.0824,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 289,
+      "seconds": 1.1
+    },
+    {
+      "attempt": 59,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0879,
+        0.2563,
+        0.022
+      ],
+      "other_xyz": [
+        0.2273,
+        -0.0875,
+        0.014
+      ],
+      "z_max": 0.0888,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 373,
+      "seconds": 1.6
+    },
+    {
+      "attempt": 60,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.078,
+        0.2749,
+        0.022
+      ],
+      "other_xyz": [
+        0.2482,
+        0.034,
+        0.014
+      ],
+      "z_max": 0.0896,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 195,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 61,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.073,
+        0.276,
+        0.022
+      ],
+      "other_xyz": [
+        0.2075,
+        0.1335,
+        0.014
+      ],
+      "z_max": 0.0819,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 198,
+      "seconds": 0.7
+    },
+    {
+      "attempt": 62,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0934,
+        0.251,
+        0.022
+      ],
+      "other_xyz": [
+        0.1918,
+        -0.0792,
+        0.014
+      ],
+      "z_max": 0.086,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 251,
+      "seconds": 0.9
+    },
+    {
+      "attempt": 63,
+      "asked": "red",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.2734,
+        -0.1337,
+        0.014
+      ],
+      "other_xyz": [
+        0.2479,
+        0.0181,
+        0.014
+      ],
+      "z_max": 0.0578,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 64,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0889,
+        0.2541,
+        0.022
+      ],
+      "other_xyz": [
+        0.2157,
+        0.0071,
+        0.014
+      ],
+      "z_max": 0.0872,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 280,
+      "seconds": 1.1
+    },
+    {
+      "attempt": 65,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1027,
+        0.2486,
+        0.022
+      ],
+      "other_xyz": [
+        0.2341,
+        -0.0419,
+        0.014
+      ],
+      "z_max": 0.0871,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 293,
+      "seconds": 1.2
+    },
+    {
+      "attempt": 66,
+      "asked": "green",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.2413,
+        0.1311,
+        0.0854
+      ],
+      "other_xyz": [
+        0.2962,
+        -0.0242,
+        0.014
+      ],
+      "z_max": 0.0854,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 67,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0982,
+        0.2482,
+        0.022
+      ],
+      "other_xyz": [
+        0.2612,
+        0.1211,
+        0.014
+      ],
+      "z_max": 0.0841,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 351,
+      "seconds": 1.5
+    },
+    {
+      "attempt": 68,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0951,
+        0.2573,
+        0.022
+      ],
+      "other_xyz": [
+        0.3081,
+        0.0388,
+        0.014
+      ],
+      "z_max": 0.0844,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 335,
+      "seconds": 1.4
+    },
+    {
+      "attempt": 69,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0908,
+        0.2553,
+        0.022
+      ],
+      "other_xyz": [
+        0.2611,
+        0.0433,
+        0.014
+      ],
+      "z_max": 0.0777,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 419,
+      "seconds": 1.7
+    },
+    {
+      "attempt": 70,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0879,
+        0.2565,
+        0.022
+      ],
+      "other_xyz": [
+        0.2136,
+        0.0492,
+        0.014
+      ],
+      "z_max": 0.0768,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 192,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 71,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0922,
+        0.2519,
+        0.022
+      ],
+      "other_xyz": [
+        0.2092,
+        0.1229,
+        0.014
+      ],
+      "z_max": 0.0833,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 230,
+      "seconds": 0.9
+    },
+    {
+      "attempt": 72,
+      "asked": "green",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1791,
+        -0.0681,
+        0.0618
+      ],
+      "other_xyz": [
+        0.192,
+        0.0376,
+        0.014
+      ],
+      "z_max": 0.0618,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 73,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0968,
+        0.2515,
+        0.022
+      ],
+      "other_xyz": [
+        0.2312,
+        0.124,
+        0.014
+      ],
+      "z_max": 0.0851,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 282,
+      "seconds": 1.1
+    },
+    {
+      "attempt": 74,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0985,
+        0.2653,
+        0.022
+      ],
+      "other_xyz": [
+        0.2396,
+        -0.0599,
+        0.014
+      ],
+      "z_max": 0.0889,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 183,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 75,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0899,
+        0.2556,
+        0.022
+      ],
+      "other_xyz": [
+        0.2812,
+        0.1369,
+        0.014
+      ],
+      "z_max": 0.0875,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 265,
+      "seconds": 1.0
+    },
+    {
+      "attempt": 76,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0924,
+        0.2589,
+        0.022
+      ],
+      "other_xyz": [
+        0.197,
+        -0.0041,
+        0.014
+      ],
+      "z_max": 0.0805,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 255,
+      "seconds": 0.9
+    },
+    {
+      "attempt": 77,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0902,
+        0.2613,
+        0.022
+      ],
+      "other_xyz": [
+        0.2103,
+        0.0866,
+        0.014
+      ],
+      "z_max": 0.0835,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 299,
+      "seconds": 1.2
+    },
+    {
+      "attempt": 78,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0909,
+        0.2543,
+        0.022
+      ],
+      "other_xyz": [
+        0.2079,
+        -0.1296,
+        0.014
+      ],
+      "z_max": 0.0854,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 373,
+      "seconds": 1.6
+    },
+    {
+      "attempt": 79,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0938,
+        0.2551,
+        0.022
+      ],
+      "other_xyz": [
+        0.3022,
+        0.0736,
+        0.014
+      ],
+      "z_max": 0.0768,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 179,
+      "seconds": 0.5
+    },
+    {
+      "attempt": 80,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0935,
+        0.26,
+        0.022
+      ],
+      "other_xyz": [
+        0.2048,
+        -0.1483,
+        0.014
+      ],
+      "z_max": 0.0847,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 283,
+      "seconds": 1.1
+    },
+    {
+      "attempt": 81,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0908,
+        0.255,
+        0.022
+      ],
+      "other_xyz": [
+        0.1986,
+        0.1398,
+        0.014
+      ],
+      "z_max": 0.0811,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 298,
+      "seconds": 1.2
+    },
+    {
+      "attempt": 82,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0927,
+        0.2545,
+        0.022
+      ],
+      "other_xyz": [
+        0.2355,
+        0.0137,
+        0.014
+      ],
+      "z_max": 0.086,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 445,
+      "seconds": 1.9
+    },
+    {
+      "attempt": 83,
+      "asked": "red",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.2767,
+        0.061,
+        0.014
+      ],
+      "other_xyz": [
+        0.2134,
+        -0.004,
+        0.014
+      ],
+      "z_max": 0.0545,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 84,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0887,
+        0.2551,
+        0.022
+      ],
+      "other_xyz": [
+        0.252,
+        -0.0604,
+        0.014
+      ],
+      "z_max": 0.0852,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 185,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 85,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1053,
+        0.2424,
+        0.022
+      ],
+      "other_xyz": [
+        0.2148,
+        0.0763,
+        0.014
+      ],
+      "z_max": 0.0819,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 190,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 86,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0874,
+        0.256,
+        0.022
+      ],
+      "other_xyz": [
+        0.3057,
+        -0.046,
+        0.014
+      ],
+      "z_max": 0.0815,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 229,
+      "seconds": 0.8
+    },
+    {
+      "attempt": 87,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0908,
+        0.2625,
+        0.022
+      ],
+      "other_xyz": [
+        0.2936,
+        -0.01,
+        0.014
+      ],
+      "z_max": 0.0765,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 192,
+      "seconds": 0.6
+    },
+    {
+      "attempt": 88,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0946,
+        0.2571,
+        0.022
+      ],
+      "other_xyz": [
+        0.2475,
+        -0.1456,
+        0.014
+      ],
+      "z_max": 0.0864,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 269,
+      "seconds": 1.0
+    },
+    {
+      "attempt": 89,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0903,
+        0.255,
+        0.022
+      ],
+      "other_xyz": [
+        0.219,
+        -0.1243,
+        0.014
+      ],
+      "z_max": 0.0851,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 268,
+      "seconds": 1.0
+    },
+    {
+      "attempt": 90,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0987,
+        0.256,
+        0.022
+      ],
+      "other_xyz": [
+        0.2521,
+        -0.0403,
+        0.014
+      ],
+      "z_max": 0.0739,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 391,
+      "seconds": 1.7
+    },
+    {
+      "attempt": 91,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0893,
+        0.2554,
+        0.022
+      ],
+      "other_xyz": [
+        0.3007,
+        0.0368,
+        0.014
+      ],
+      "z_max": 0.0778,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 278,
+      "seconds": 1.1
+    },
+    {
+      "attempt": 92,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0947,
+        0.2511,
+        0.022
+      ],
+      "other_xyz": [
+        0.2839,
+        -0.0845,
+        0.014
+      ],
+      "z_max": 0.0793,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 292,
+      "seconds": 1.2
+    },
+    {
+      "attempt": 93,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0911,
+        0.2538,
+        0.022
+      ],
+      "other_xyz": [
+        0.2235,
+        0.0705,
+        0.014
+      ],
+      "z_max": 0.0884,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 366,
+      "seconds": 1.5
+    },
+    {
+      "attempt": 94,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0969,
+        0.2518,
+        0.022
+      ],
+      "other_xyz": [
+        0.2326,
+        -0.0948,
+        0.014
+      ],
+      "z_max": 0.0817,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 254,
+      "seconds": 0.9
+    },
+    {
+      "attempt": 95,
+      "asked": "red",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0903,
+        0.2548,
+        0.022
+      ],
+      "other_xyz": [
+        0.3041,
+        -0.1241,
+        0.014
+      ],
+      "z_max": 0.0882,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 233,
+      "seconds": 0.9
+    },
+    {
+      "attempt": 96,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0911,
+        0.2536,
+        0.022
+      ],
+      "other_xyz": [
+        0.1968,
+        -0.1205,
+        0.014
+      ],
+      "z_max": 0.08,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 345,
+      "seconds": 1.4
+    },
+    {
+      "attempt": 97,
+      "asked": "red",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.1861,
+        0.0932,
+        0.0149
+      ],
+      "other_xyz": [
+        0.2421,
+        -0.0971,
+        0.014
+      ],
+      "z_max": 0.0551,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.9
+    },
+    {
+      "attempt": 98,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0873,
+        0.2557,
+        0.022
+      ],
+      "other_xyz": [
+        0.2742,
+        -0.1338,
+        0.014
+      ],
+      "z_max": 0.0818,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 278,
+      "seconds": 1.1
+    },
+    {
+      "attempt": 99,
+      "asked": "red",
+      "success": false,
+      "lifted": false,
+      "in_bin": null,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.2221,
+        -0.1471,
+        0.014
+      ],
+      "other_xyz": [
+        0.2971,
+        -0.025,
+        0.014
+      ],
+      "z_max": 0.014,
+      "retries": 0,
+      "finished_early": false,
+      "sim_steps": 360,
+      "seconds": 1.8
+    },
+    {
+      "attempt": 100,
+      "asked": "green",
+      "success": true,
+      "lifted": true,
+      "in_bin": true,
+      "wrong_cube": false,
+      "both": false,
+      "ever_in_bin": false,
+      "target_xyz": [
+        0.0894,
+        0.2561,
+        0.022
+      ],
+      "other_xyz": [
+        0.2947,
+        0.0735,
+        0.014
+      ],
+      "z_max": 0.0865,
+      "retries": 0,
+      "finished_early": true,
+      "sim_steps": 314,
+      "seconds": 1.3
+    }
+  ]
+}

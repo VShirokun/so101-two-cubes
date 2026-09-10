@@ -1,0 +1,2 @@
+pyserial>=3.5
+bleak>=3.0    # BLE-резерв (teleop_server.py --ble); уже установлен в окружение lerobot

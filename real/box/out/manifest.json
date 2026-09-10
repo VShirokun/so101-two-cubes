@@ -1,0 +1,43 @@
+{
+  "units": "mm",
+  "outer": [
+    110.0,
+    110.0,
+    44.0
+  ],
+  "wall": 8.0,
+  "floor": 8.0,
+  "inner": [
+    94.0,
+    94.0,
+    36.0
+  ],
+  "sim_match": "mlsim/models/so101/pick_place.xml bin: след 0.110, борт до z=0.044, дно до z=0.008 — критерий criteria.py переносится без правок",
+  "marker": {
+    "dictionary": "DICT_4X4_50",
+    "id": 16,
+    "marker_size_mm": 60.0,
+    "module_mm": 10.0,
+    "center_in_bin_mm": [
+      0,
+      0,
+      8.0
+    ],
+    "normal": [
+      0,
+      0,
+      1
+    ],
+    "up": [
+      0,
+      1,
+      0
+    ],
+    "right": [
+      1,
+      0,
+      0
+    ],
+    "note": "up метки = +Y коробки; поза коробки в мире = поза метки, сдвинутая на -floor по z"
+  }
+}

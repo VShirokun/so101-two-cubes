@@ -1,0 +1,78 @@
+<!--
+  Сцена для демо Д-20/21/22 без железа: рука SO-101 на столе, два кубика
+  (красный и зелёный) и коробка-приёмник.
+
+  Почему два кубика ОДНОВРЕМЕННО в кадре: это и есть проверка VLA. Если бы в
+  сцене лежал один предмет, политика могла бы просто «брать то, что лежит», и
+  языковая инструкция ничего не решала бы. Два предмета делают команду
+  «возьми красный» / «возьми зелёный» единственным источником различия.
+
+  Камера `top` — аналог USB-камеры над рабочей зоной на реальном роботе,
+  `wrist_cam` уже есть в модели руки.
+-->
+<mujoco model="so101_pick_place">
+  <!-- Файл лежит рядом с so101.xml намеренно: MuJoCo резолвит меши включаемой
+       модели относительно ГЛАВНОГО файла, поэтому сцена обязана быть в той же папке. -->
+  
+  <include file="so101.xml"/>
+
+  <option timestep="0.002" integrator="implicitfast"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.35 0.35 0.35" specular="0.1 0.1 0.1"/>
+    <global azimuth="150" elevation="-25" offwidth="1024" offheight="1024"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.25 0.3 0.35" rgb2="0.05 0.06 0.08" width="512" height="512"/>
+    <texture type="2d" name="desk_tex" builtin="checker" rgb1="0.55 0.52 0.48" rgb2="0.5 0.47 0.43"
+             markrgb="0.4 0.38 0.35" mark="edge" width="300" height="300"/>
+    <material name="desk" texture="desk_tex" texuniform="true" texrepeat="8 8" reflectance="0.05"/>
+    <material name="red_mat"   rgba="0.85 0.12 0.12 1"/>
+    <material name="green_mat" rgba="0.10 0.70 0.20 1"/>
+    <material name="bin_mat"   rgba="0.25 0.35 0.75 1"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0.3 0.0 1.2" dir="0 0 -1" directional="true" diffuse="0.7 0.7 0.7"/>
+    <light pos="0.1 0.5 0.9" dir="0.2 -0.5 -1" diffuse="0.3 0.3 0.3"/>
+
+    <!-- Стол: рука стоит на нём, начало координат — основание руки -->
+    <geom name="desk" type="box" size="0.6 0.6 0.02" pos="0.25 0 -0.02" material="desk"
+          friction="1.0 0.02 0.001"/>
+
+    <!-- Камера над рабочей зоной: то же, что USB-камера на роботе -->
+    <camera name="top" pos="0.28 0.0 0.55" xyaxes="0 -1 0 1 0 0" fovy="58"/>
+    <!-- Обзорная камера для гифки в витрину (в наблюдения политики не идёт) -->
+    <camera name="show" pos="0.62 -0.45 0.42" xyaxes="0.6 0.8 0 -0.35 0.26 0.9" fovy="50"/>
+
+    <body name="red_cube" pos="0.25 0.10 0.014">
+      <freejoint name="red_free"/>
+      <geom name="red_geom" type="box" size="0.014 0.014 0.014" material="red_mat"
+            mass="0.03" friction="1.2 0.02 0.001" solimp="0.95 0.99 0.001" solref="0.004 1"/>
+    </body>
+
+    <body name="green_cube" pos="0.25 -0.10 0.014">
+      <freejoint name="green_free"/>
+      <geom name="green_geom" type="box" size="0.014 0.014 0.014" material="green_mat"
+            mass="0.03" friction="1.2 0.02 0.001" solimp="0.95 0.99 0.001" solref="0.004 1"/>
+    </body>
+
+    <!-- Коробка-приёмник: дно + четыре борта. Успех = кубик внутри. -->
+    <body name="bin" pos="0.10 0.26 0.0">
+      <geom name="bin_floor" type="box" size="0.055 0.055 0.004" pos="0 0 0.004" material="bin_mat"/>
+      <geom name="bin_w1" type="box" size="0.055 0.004 0.022" pos="0 0.051 0.022" material="bin_mat"/>
+      <geom name="bin_w2" type="box" size="0.055 0.004 0.022" pos="0 -0.051 0.022" material="bin_mat"/>
+      <geom name="bin_w3" type="box" size="0.004 0.055 0.022" pos="0.051 0 0.022" material="bin_mat"/>
+      <geom name="bin_w4" type="box" size="0.004 0.055 0.022" pos="-0.051 0 0.022" material="bin_mat"/>
+      <site name="bin_center" pos="0 0 0.02" size="0.005" rgba="1 1 1 0"/>
+    </body>
+  </worldbody>
+
+  <keyframe>
+    <!-- Домашняя поза: рука поднята над столом, схват открыт -->
+    <key name="home"
+         qpos="0 -1.2 1.2 0.6 0 0.9   0.25 0.10 0.014 1 0 0 0   0.25 -0.10 0.014 1 0 0 0"
+         ctrl="0 -1.2 1.2 0.6 0 0.9"/>
+  </keyframe>
+</mujoco>
