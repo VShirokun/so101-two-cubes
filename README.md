@@ -1,36 +1,89 @@
-# Two cubes with markers: a real SO-101 arm that calibrates itself, records its own dataset, and learns to pick with NVIDIA Isaac GR00T
+# Two cubes with markers
 
-[![reel](docs/article/media/09-first-real-lift-by-policy.jpg)](docs/contest/two-cubes-reel.mp4)
+**A real SO-101 arm that calibrates itself, records its own dataset, recolours it, and learns to pick with NVIDIA Isaac GR00T N1.7 — on one RTX 4090, no teleoperation.**
 
-*One-minute video: [`docs/contest/two-cubes-reel.mp4`](docs/contest/two-cubes-reel.mp4). Long read: [`docs/article/linkedin-two-cubes-en.md`](docs/article/linkedin-two-cubes-en.md).*
+<p align="center">
+  <img src="docs/gifs/real-lift-policy.gif" width="820" alt="First real cube lifted by the fine-tuned GR00T policy: top camera left, wrist camera right"><br>
+  <sub>First real cube lifted by the fine-tuned GR00T N1.7 policy. Left: top camera. Right: wrist camera. Caption shows grasp-point height and gripper opening.</sub>
+</p>
 
-Two 3D-printed 28 mm cubes with ArUco markers on all six faces are both the object the robot learns to grasp
-and the measuring instrument it calibrates itself with. Everything runs on a desk with a
-SO-101 arm (LeRobot), two webcams and one RTX 4090. No teleoperation, no motion capture.
+Two 3D-printed 28 mm cubes with ArUco markers on all six faces are both the object the robot learns to grasp and the measuring instrument it calibrates itself with. Everything runs on a desk: SO-101 arm (LeRobot), two webcams, one 24 GB GPU.
 
-| Step | What happens | Result | Code |
-|---|---|---|---|
-| 1. Cubes | white body + black "key" inlays, unique pocket per marker ID, no rotational symmetry; box with a marker in its floor | print-ready 3MF | `real/cubes/`, `real/box/` |
-| 2. Self-calibration | cubes lie on the table, the arm tours 48 poses; one bundle adjustment over marker corners from both cameras solves top-camera pose, wrist-camera pose, per-joint corrections and cube positions | residual 1.6 px, **2.9 mm** on 12 held-out poses; joint scale off by up to 14 % | `real/arm/autocalib_real.py` |
-| 3. First grasp | find with the top camera → approach → wrist-camera refinement → grasp → lift → verify → put back | 1 cycle, no intervention | `real/arm/autocalib_real.py grasp` |
-| 4. Autonomous dataset | find → grasp → lift → confirm with wrist camera → carry to a random point → release; cubes alternate, every drop reshuffles the scene | **200+ episodes** in two evenings, 30 Hz, both cameras | `real/arm/collect_pilot.py` |
-| 5. Recolouring | markers are for algorithms, the policy needs colours: faces projected from the known cube pose, black cells replaced, target colour × per-pixel brightness; gripper fingers preserved | one recording → any cube colours | `mlsim/recolor.py`, `real/arm/recolor_pilot.py` |
-| 6. GR00T fine-tuning | NVIDIA Isaac GR00T N1.7 (3B, Cosmos-Reason2 backbone) on one 24 GB RTX 4090, 86 min per model; task split: the policy lifts, an algorithm carries to the box | sim **88/100 lift**, **86/100 in box** (policy + algorithm); first real cube lifted by the fine-tuned model | `ml/gr00t/`, `mlsim/carry.py`, `real/arm/run_policy.py` |
-| 7. Keeping the rig honest | calibration watchdog (checks from frames during operation that cameras, robot and box are still in place), self-collision guard on the MuJoCo model, brightness check | 0 false trips on 3744 recorded poses | `real/watch/`, `real/arm/selfcol.py` |
+▶ One-minute video: [`docs/contest/two-cubes-reel.mp4`](docs/contest/two-cubes-reel.mp4) · Long read: [`docs/article/linkedin-two-cubes-en.md`](docs/article/linkedin-two-cubes-en.md) · GR00T on one 24 GB GPU: [gr00t-on-4090](https://github.com/VShirokun/gr00t-on-4090)
+
+## The pipeline, step by step
+
+<table>
+<tr>
+<td width="50%" valign="top">
+<img src="docs/article/media/01-cubes-on-table.jpg" alt="Two marker cubes on the table"><br>
+<b>1. Cubes you cannot assemble wrong.</b> White body with shaped pockets, six black "key" inlays; each pocket is unique to its marker ID and has no rotational symmetry. Markers on all six faces keep the cube readable lying, held, or in front of the wrist camera. The receiving box has a marker in its floor. Print files: <code>real/cubes/out</code>, <code>real/box/out</code>.
+</td>
+<td width="50%" valign="top">
+<img src="docs/gifs/autocalib.gif" alt="Self-calibration tour"><br>
+<b>2. Self-calibration from two cubes lying on the table.</b> The arm tours 48 poses aiming the wrist camera at the cubes while the top camera watches them too. One bundle adjustment over marker corners solves top-camera pose, wrist-camera pose, per-joint corrections and cube positions: residual 1.6 px, <b>2.9 mm</b> on 12 held-out poses. Real servos were off by up to 14 % in scale. <code>real/arm/autocalib_real.py</code>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<img src="docs/gifs/first-grasp.gif" alt="First autonomous grasp (2.5x)"><br>
+<b>3. First grasp with no human in the loop (2.5×).</b> Find with the top camera → approach → refine with the wrist camera → grasp across the faces → lift → verify from above → put back 17 mm from where it was. <code>real/arm/autocalib_real.py grasp</code>
+</td>
+<td valign="top">
+<img src="docs/gifs/dataset.gif" alt="Autonomous dataset recording (4x)"><br>
+<b>4. The robot records its own dataset (4×).</b> Grasp → lift → confirm with the wrist camera → carry to a random point → release. Cubes alternate and every drop reshuffles the scene, so no human is needed. <b>200+ episodes</b> in two evenings, both cameras at 30 Hz. <code>real/arm/collect_pilot.py</code>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<img src="docs/gifs/recolor.gif" alt="Geometric recolouring"><br>
+<b>5. Recolouring: one recording, any cube colours.</b> Faces are projected from the known cube pose, black cells replaced by the face's white, target colour × per-pixel brightness; gripper fingers and shadows preserved. Used to train for real green and grey cubes without markers. <code>mlsim/recolor.py</code>, <code>real/arm/recolor_pilot.py</code>
+</td>
+<td valign="top">
+<img src="docs/gifs/sim-lift-carry.gif" alt="Policy lifts, algorithm carries (simulation)"><br>
+<b>6. GR00T N1.7 fine-tuned on one RTX 4090.</b> Task split: the policy finds and lifts, a plain algorithm carries to the box. Simulation: policy lifts <b>88/100</b>, policy + algorithm <b>86/100 in the box</b>, wrong cube 0. 86 minutes per model, peak 21.7 GB. <code>ml/gr00t/train_lift.sh</code>, <code>mlsim/carry.py</code>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<img src="docs/article/media/09-first-real-lift-by-policy.jpg" alt="Real lift by policy"><br>
+<b>7. On the real arm.</b> First model (raw episodes) froze at hover height and closed beside the cube: the demonstrations contained 4 s of the arm settling motionless and the clone learned to "stand still". Idle frames cut, steps doubled → the policy lifted a real cube. A hybrid "policy approaches, algorithm centres with the wrist camera and grasps" lifts more reliably. <code>real/arm/run_policy.py</code>
+</td>
+<td valign="top">
+<img src="report-assets/real-color-cubes-lift-by-color.jpg" alt="Real green and grey cubes grasped by colour"><br>
+<b>8. Real green and grey cubes, no markers.</b> Wrist-camera colour servo: colour blob → contour rays onto the cube-centre plane → footprint → centre and yaw. Top and wrist cameras agree within 8–9 mm; both cubes grasped and lifted. A GR00T model trained on recoloured data is the next test. <code>real/arm/cube_color.py</code>
+</td>
+</tr>
+</table>
+
+## Keeping a wobbly rig honest
+
+<table>
+<tr>
+<td width="50%" valign="top">
+<img src="docs/gifs/sim-fails.gif" alt="Failure reel"><br>
+<b>Every miss is recorded.</b> After each evaluation the tool writes a reel of <i>all</i> failures with a diagnosis card (where the cube went, how many tries, how long). Failure analysis by eye is a project rule; the numbers alone hid the real causes twice. <code>ml/gr00t/eval_groot_lift.py --fail-reel</code>
+</td>
+<td width="50%" valign="top">
+<img src="docs/article/media/03-autocalib.jpg" alt="Calibration overlay"><br>
+<b>Watchdog and guards.</b> A calibration watchdog reads only camera frames and telemetry during operation and reports <i>what</i> moved (camera, robot, box) from phase correlation of the table, marker anchors and arm silhouette. A self-collision guard on the MuJoCo model checks every commanded pose (0 false trips on 3744 recorded poses). A brightness check refuses to run in the dark. <code>real/watch/calib_watch.py</code>, <code>real/arm/selfcol.py</code>
+</td>
+</tr>
+</table>
 
 ## NVIDIA technology used
 
-- **Isaac GR00T N1.7** (open VLA model) fine-tuned from the public checkpoint; the 24 GB recipe, patches and install script are in the companion repo
-  [gr00t-on-4090](https://github.com/VShirokun/gr00t-on-4090) together with three CC-BY datasets on Hugging Face and 1800 evaluated attempts as JSON.
-- Training and inference on a single **RTX 4090** (peak 21.7 GB); inference 66 ms per 16-step action chunk on the real arm.
-- Evaluation in **MuJoCo** with the official SO-101 model (mujoco_menagerie) and a physics-judged success criterion; the same criterion is used on the real box.
+- **Isaac GR00T N1.7** (open 3B VLA, Cosmos-Reason2 backbone) fine-tuned from the public checkpoint. The 24 GB recipe, patches, install script, three CC-BY datasets on Hugging Face and 1800 evaluated attempts as JSON live in [gr00t-on-4090](https://github.com/VShirokun/gr00t-on-4090).
+- Training and inference on a single **RTX 4090**; 66 ms per 16-step action chunk on the real arm.
+- **MuJoCo** with the official SO-101 model (mujoco_menagerie) for the calibration solver, self-collision guard, expert data and physics-judged evaluation.
 
 ## Honest numbers
 
-- Real policy, lift task, 5-attempt runs today: 1–3 of 5 lifts by video, 1 of 5 by the strict wrist-marker criterion; the typical miss is the fingers closing 2–3 cm beside the cube.
-- Hybrid "policy approaches, algorithm centres with the wrist camera and grasps": 2 of 5 on the first run.
-- Every miss is recorded (`docs/visual-evidence.md`); the evaluation protocol requires 1200 attempts over two seed sets before claiming an improvement (`ml/gr00t/README.md`).
-- Known limitation: recolouring still leaves artefacts near cube edges and around the wrist-camera housing.
+- Real policy, lift task, 5-attempt runs: 1–3 of 5 lifts by video, 1 of 5 by the strict wrist-marker criterion. Typical miss: fingers close 2–3 cm beside the cube.
+- Hybrid (policy approaches, algorithm grasps): 2 of 5 on the first run.
+- Evaluation noise is ±2.3 pp per 100 attempts; an improvement is claimed only on 1200 attempts over two seed sets (`ml/gr00t/README.md`).
+- Recolouring still leaves artefacts at cube edges and around the wrist-camera housing.
+- Every decision and deviation: `ml/gr00t/DEVIATIONS.md`, `docs/visual-evidence.md`, `docs/real-rig-handoff.md`.
 
 ## Reproduce
 
@@ -41,11 +94,11 @@ real/arm/autocalib_real.py tour|solve|hover   # self-calibration from the two cu
 real/arm/collect_pilot.py --episodes 100      # autonomous dataset
 real/arm/recolor_pilot.py --colors green,gray # recolouring
 real/arm/pilot_to_lift_v21.py --drop-idle     # LeRobot v2.1 dataset for GR00T
-ml/gr00t/train_lift.sh                        # fine-tune (see gr00t-on-4090 for the environment)
+ml/gr00t/train_lift.sh                        # fine-tune (environment: see gr00t-on-4090)
 real/arm/run_policy.py --policy <ckpt> --servo-grasp   # run on the arm
 ```
 
-Details, decisions and every deviation from the plan: `docs/real-rig-handoff.md`, `ml/gr00t/DEVIATIONS.md`, `docs/visual-evidence.md`.
+Paths in the scripts point at our machine (`/srv/data/...`); adjust to yours.
 
 ## License
 
