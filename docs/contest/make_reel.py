@@ -70,7 +70,7 @@ frames += clip(A / 'real-pilot-preview.mp4', 12, 9, 1, "The robot records its ow
 frames += clip(A / 'real-pilot-recolor-preview.mp4', 10, 7, 1, "Geometric recolouring: one recording, any cube colours", "markers replaced, fingers and shadows preserved")
 frames += clip(A / 'demo-lift-carry-sim-10k.mp4', 1, 8, 1, "GR00T N1.7 fine-tuned on one RTX 4090: 86/100 in simulation", "policy lifts, a plain algorithm carries to the box", crop_top=32)
 frames += clip(M / 'first-real-lift-by-policy.mp4', 0, 6.4, 1, "First real cube lifted by the fine-tuned GR00T", "top camera left, wrist camera right")
-frames += still(A / 'real-color-cubes-lift-by-color.jpg', 3.5, "Real green and grey cubes, no markers", "wrist-camera colour servo; GR00T on recoloured data is training now")
+frames += still(A / 'real-color-cubes-lift-by-color.jpg', 3.5, "Real green and grey cubes, no markers", "wrist-camera colour servo; the policy trained on recoloured data + colour servo lifted the green one")
 frames += card(["Everything is open source", "github.com/VShirokun/so101-two-cubes  (this project)",
                 "github.com/VShirokun/gr00t-on-4090  (GR00T on one 24 GB GPU, datasets)", "#NVIDIAGTC"], 4)
 print("frames", len(frames), "sec", len(frames) / FPS)
