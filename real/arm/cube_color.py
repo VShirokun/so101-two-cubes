@@ -69,6 +69,9 @@ def cube_by_wrist_color(d, color, Xw, frames=3):
         c = best_blob(m)
         if c is None:
             continue
+        x, y, w, h = cv2.boundingRect(c)
+        if x < 8 or y < 8 or x + w > img.shape[1] - 8 or y + h > img.shape[0] - 8:
+            continue            # кубик обрезан краем кадра — след будет неверным
         pts = A.undistort(c.reshape(-1, 2).astype(np.float32), A.K_WR, A.D_WR)
         # лучи контура на плоскость z = CUBE_HALF
         Kinv = np.linalg.inv(A.K_WR)

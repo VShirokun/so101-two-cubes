@@ -166,11 +166,17 @@ def main():
                         q_hist = q_hist[-15:]
                         # передача алгоритму: кубик виден камере кисти вблизи (точка схвата ниже 9 см),
                         # губки ещё раскрыты; проверка не чаще раза в 10 тактов (детекция ~0,4 с)
-                        if a.servo_grasp and not handover and qr[5] > 1.2 and 0.03 < zr < 0.09 \
+                        if a.servo_grasp and not handover and qr[5] > 1.2 and 0.03 < zr < 0.065 \
                                 and time.time() - t0 > 2.0 and ticks % 9 == 0:
                             fix = None
                             tcp_xy = d.fk_T(qr[:5])[:2, 3]
-                            colors_try = a.servo_color.split(",") if a.servo_color else ("red", "green")
+                            # только цвет из задачи: иначе гибрид брал зелёный на задаче «серый» (18:17)
+                            words = {"зелён": "green", "сер": "gray", "красн": "red", "green": "green", "gray": "gray", "grey": "gray"}
+                            target = next((c for w, c in words.items() if w in a.task.lower()), None)
+                            if a.servo_color:
+                                colors_try = [c for c in a.servo_color.split(",") if target is None or c == target]
+                            else:
+                                colors_try = [c for c in ("red", "green") if target is None or c == target]
                             for color in colors_try:
                                 if a.servo_color:
                                     r_ = cube_by_wrist_color(d, color, Xw)
@@ -179,7 +185,7 @@ def main():
                                     fix = cube_by_wrist(d, color, Xw)
                                 # куб под кистью: оценка не дальше 8 см от точки схвата и в зоне досягаемости
                                 if fix is not None and (np.linalg.norm(fix[0] - tcp_xy) > 0.08
-                                                        or not (0.14 <= fix[0][0] <= 0.32 and abs(fix[0][1]) <= 0.21)):
+                                                        or not (0.10 <= fix[0][0] <= 0.32 and abs(fix[0][1]) <= 0.21)):
                                     print(f"  гибрид: оценка {color} {np.round(fix[0], 3).tolist()} отвергнута "
                                           f"(схват в {np.round(tcp_xy, 3).tolist()})", flush=True)
                                     fix = None
