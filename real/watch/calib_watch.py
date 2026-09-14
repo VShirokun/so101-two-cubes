@@ -109,13 +109,21 @@ def prep(gray):
     return g
 
 
+_BIAS = {}     # cv2.phaseCorrelate даёт 0,5 px даже для одинаковых кадров — вычитаем смещение эталона к самому себе
+
+
 def bg_shift(ref_gray, cur_gray):
     """(медианный сдвиг px по областям, min отклик, список по областям)."""
     rows = []
     for x0, y0, x1, y1 in BG_ROIS:
         a, b = prep(ref_gray[y0:y1, x0:x1]), prep(cur_gray[y0:y1, x0:x1])
         win = cv2.createHanningWindow((x1 - x0, y1 - y0), cv2.CV_32F)
+        key = (x0, y0, x1, y1, id(ref_gray))
+        if key not in _BIAS:
+            (bx, by), _ = cv2.phaseCorrelate(a, a, win)
+            _BIAS[key] = (float(bx), float(by))
         (dx, dy), resp = cv2.phaseCorrelate(a, b, win)
+        dx, dy = dx - _BIAS[key][0], dy - _BIAS[key][1]
         rows.append((float(dx), float(dy), float(resp)))
     good = [r for r in rows if r[2] > 0.15]
     if len(good) < 2:

@@ -222,6 +222,20 @@ def process_episode(ep_dir, out_dir, Xt, Xw, rng, keep=None, colors=None):
     T_other = None
     if other in meta.get("others", {}):
         T_other, _ = fit_lying(top_px[0], np.array(meta["others"][other]), other, T_cam_base)
+    else:
+        # сборщик не увидел второй куб в момент старта (meta.others пуст) — берём его
+        # позу из первого кадра эпизода, где видны его метки (ep_0000 10.09: второй куб
+        # оставался ч/б в верхней камере)
+        Xt = np.linalg.inv(T_cam_base)
+        for i in range(n):
+            px_o = {m: v for m, v in top_px[i].items() if _ID2FACE[m][0] == other}
+            if not px_o:
+                continue
+            T = Xt @ A.cube_poses(px_o, A.K_TOP)[other]
+            c, ray = Xt[:3, 3], T[:3, 3] - Xt[:3, 3]
+            T[:3, 3] = c + ray * (A.CUBE_HALF - c[2]) / ray[2]
+            T_other, _ = fit_lying(top_px[i], T, other, T_cam_base)
+            break
 
     # --- держание: куб в камере кисти неподвижен -> медиана детекций --------
     held_det = [wr_det[i][color] for i in range(i_close, i_open) if color in wr_det[i]]

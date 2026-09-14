@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SO-101 AR teleop</title>
+<style>
+:root{--bg:#141618;--fg:#ecedea;--dim:#9aa0a6;--acc:#e0651f;--bad:#e5484d;--ok:#3fb950}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font:15px/1.3 -apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden;touch-action:none}
+#start{height:100dvh;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;padding:24px;text-align:center}
+#start p{color:var(--dim);max-width:34ch;margin:0}
+button{background:#2a2f34;color:var(--fg);border:0;border-radius:12px;padding:14px 18px;font-size:17px;font-weight:600;min-height:48px;touch-action:none}
+button.big{background:var(--acc);font-size:20px;padding:18px 28px}
+/* оверлей поверх AR-сессии */
+#ov{position:fixed;inset:0;display:none;flex-direction:column;background:#000}
+#ov.on{display:flex}
+.cam{position:relative;flex:1;min-height:0;background:#000}
+.cam img,.cam video{width:100%;height:100%;object-fit:contain;display:block}
+#glow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hud{position:absolute;left:10px;top:8px;font:12px ui-monospace,monospace;color:#ddd;background:rgba(0,0,0,.45);padding:3px 7px;border-radius:5px;max-width:80%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:#141618}
+.bar input[type=range]{flex:1;height:48px;accent-color:var(--acc);margin:0}
+#follow{min-width:7.5em}
+#follow.on{background:var(--ok)}
+#exit{background:#3a3f44}
+#role,#rec{background:#2a2f34}
+#role.on{background:#2f6b3a}
+#rec.on{background:var(--bad)}
+
+.zbar{position:absolute;right:8px;top:8px;bottom:8px;width:10px;border-radius:5px;background:linear-gradient(to bottom,rgba(229,72,77,var(--up,0)),transparent 30%,transparent 70%,rgba(229,72,77,var(--down,0)));pointer-events:none}
+</style></head><body>
+<div id="start">
+  <h2 style="margin:0">Телефон как схват</h2>
+  <p>Держите телефон экраном к себе, задней камерой туда, куда «смотрит» схват. Нажмите «Старт AR», затем «Следовать»: смещение и поворот телефона повторяются схватом 1:1. На экране — камера кисти и ползунок схвата.</p>
+  <button id="go" class="big">Старт AR</button>
+  <p id="sup"></p>
+  <p><a href="/" style="color:var(--dim)">обычный режим с джойстиком</a></p>
+</div>
+<div id="ov">
+  <div class="cam"><video id="wimg" autoplay muted playsinline></video><canvas id="glow"></canvas><div class="hud" id="hud">…</div><div class="zbar" id="zbar"></div></div>
+  <div class="bar"><span style="color:var(--dim);font-size:12px">схват</span><input id="grip" type="range" min="0" max="100" value="0"><span id="gv" style="font-size:12px;color:var(--dim);min-width:3em;text-align:right">0 %</span></div>
+  <div class="bar" style="padding-top:0"><button id="follow">Следовать</button><button id="scale">1:1</button><button id="rec">Запись</button><button id="role">…</button><button id="stop" style="background:var(--bad)">СТОП</button><button id="exit">Выйти</button></div>
+</div>
+<script>
+const k=new URLSearchParams(location.search).get('k')||''; const q=k?('?k='+k):'';
+
+// видео: сначала WebRTC (низкая задержка), если за 4 с не соединилось — MJPEG
+async function startVideo(map){ // map: {wrist: <video|img element>, top: ...}
+  const fallback=()=>{for(const [cam,el] of Object.entries(map)){ if(el.tagName==='VIDEO'){const im=document.createElement('img'); im.alt=cam; im.style.cssText=el.style.cssText; im.className=el.className; im.id=el.id; el.replaceWith(im); im.src='/cam/'+cam+'.mjpg'+q;} else el.src='/cam/'+cam+'.mjpg'+q;} document.body.dataset.video='mjpeg';};
+  if(!window.RTCPeerConnection){fallback(); return;}
+  try{
+    const pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+    pc.addTransceiver('video',{direction:'recvonly'}); pc.addTransceiver('video',{direction:'recvonly'});
+    const els=[map.wrist,map.top]; let i=0;
+    pc.ontrack=ev=>{const el=els[i++]; if(el&&el.tagName==='VIDEO'){el.srcObject=new MediaStream([ev.track]); el.play().catch(()=>{});}};
+    const offer=await pc.createOffer(); await pc.setLocalDescription(offer);
+    await new Promise(r=>{if(pc.iceGatheringState==='complete')r(); else{pc.onicegatheringstatechange=()=>{if(pc.iceGatheringState==='complete')r();}; setTimeout(r,1500);}});
+    const resp=await fetch('/rtc/offer'+q,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sdp:pc.localDescription.sdp,type:pc.localDescription.type})});
+    if(!resp.ok) throw new Error('offer '+resp.status);
+    await pc.setRemoteDescription(await resp.json());
+    const ok=await new Promise(r=>{const t=setTimeout(()=>r(false),4000); pc.onconnectionstatechange=()=>{if(pc.connectionState==='connected'){clearTimeout(t);r(true);} if(['failed','closed'].includes(pc.connectionState)){clearTimeout(t);r(false);}};});
+    if(!ok){pc.close(); fallback();} else document.body.dataset.video='webrtc';
+  }catch(e){fallback();}
+}
+startVideo({wrist:document.getElementById('wimg')});
+let ws, xrSession=null, refSpace=null, follow=false, anchor=null, latest=null, stopped=false;
+const cmd={mode:'xr',engaged:false,dx:0,dy:0,dz:0,dyaw:0,dpitch:0,scale:1,grip:null};
+function connect(){ws=new WebSocket((location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws'+q);
+  ws.onmessage=e=>{const s=JSON.parse(e.data); latest=s;
+    document.getElementById('hud').textContent=`${s.tcp[0]} ${s.tcp[1]} ${s.tcp[2]} м · yaw ${s.yaw_deg}° наклон ${s.pitch_deg??0}° · ${s.alive?'связь':'НЕТ СВЯЗИ'}${s.stop?' · СТОП':''}${s.msg?' · '+s.msg:''}`;
+    drawBlocks(s.blocks||[], s.limits&&s.limits.ik&&!(s.blocks||[]).length);
+    const z=document.getElementById('zbar'); z.style.setProperty('--up',s.up||0); z.style.setProperty('--down',s.down||0);
+    stopped=s.stop; document.getElementById('stop').textContent=stopped?'Продолжить':'СТОП'; applyRole(s);};
+  ws.onclose=()=>setTimeout(connect,1000);}
+connect();
+setInterval(()=>{if(ws&&ws.readyState===1){ws.send(JSON.stringify(cmd)); cmd.grip=null;}},50);
+const g=document.getElementById('grip'); g.addEventListener('input',()=>{cmd.grip=g.value/100; document.getElementById('gv').textContent=g.value+' %';});
+
+// роль оператора и запись демонстраций (общее для всех страниц)
+let myRole='viewer', recOn=false;
+function applyRole(s){myRole=s.role||'viewer'; recOn=!!s.rec;
+  const rb=document.getElementById('role'); if(rb){rb.textContent=myRole==='controller'?'управляю':'смотрю'; rb.classList.toggle('on',myRole==='controller');}
+  const rc=document.getElementById('rec'); if(rc){rc.textContent=recOn?('● '+s.rec.ep+' '+s.rec.sec+'с'):'Запись'; rc.classList.toggle('on',recOn);}}
+function bindRoleRec(){const rb=document.getElementById('role'), rc=document.getElementById('rec');
+  if(rb) rb.onclick=()=>{if(myRole!=='controller') ws.send(JSON.stringify({cmd:'take'}));};
+  if(rc) rc.onclick=()=>ws.send(JSON.stringify(recOn?{cmd:'rec_stop',success:true}:{cmd:'rec_start',task:'teleop'}));}
+bindRoleRec();
+document.getElementById('stop').onclick=()=>ws.send(JSON.stringify({cmd:stopped?'resume':'stop'}));
+document.getElementById('follow').onclick=()=>{follow=!follow; anchor=null; cmd.engaged=follow; document.getElementById('follow').classList.toggle('on',follow); document.getElementById('follow').textContent=follow?'Следую':'Следовать';};
+document.getElementById('exit').onclick=()=>{if(xrSession) xrSession.end();};
+document.getElementById('scale').onclick=e=>{cmd.scale=cmd.scale===1?0.5:1; e.target.textContent=cmd.scale===1?'1:1':'1:2';};
+// поддержка
+(async()=>{const sup=document.getElementById('sup');
+  if(!navigator.xr){sup.textContent='WebXR недоступен в этом браузере (нужен Chrome на Android с ARCore).'; return;}
+  const ok=await navigator.xr.isSessionSupported('immersive-ar'); sup.textContent=ok?'WebXR AR поддерживается.':'immersive-ar не поддерживается на этом устройстве.';})();
+document.getElementById('go').onclick=async()=>{
+  try{
+    xrSession=await navigator.xr.requestSession('immersive-ar',{requiredFeatures:['local'],optionalFeatures:['dom-overlay','local-floor'],domOverlay:{root:document.getElementById('ov')}});
+  }catch(e){document.getElementById('sup').textContent='Не удалось начать AR: '+e.message; return;}
+  document.getElementById('start').style.display='none'; document.getElementById('ov').classList.add('on');
+  const gl=document.createElement('canvas').getContext('webgl',{xrCompatible:true});
+  await xrSession.updateRenderState({baseLayer:new XRWebGLLayer(xrSession,gl)});
+  try{refSpace=await xrSession.requestReferenceSpace('local-floor');}catch(e){refSpace=await xrSession.requestReferenceSpace('local');}
+  xrSession.requestAnimationFrame(onFrame);
+  xrSession.addEventListener('end',()=>{xrSession=null; follow=false; cmd.engaged=false; document.getElementById('ov').classList.remove('on'); document.getElementById('start').style.display='flex';});
+};
+// поза телефона -> смещение цели схвата (оси робота: x вперёд, y влево, z вверх)
+function onFrame(t, frame){
+  xrSession.requestAnimationFrame(onFrame);
+  const pose=frame.getViewerPose(refSpace); if(!pose) return;
+  const p=pose.transform.position, o=pose.transform.orientation;
+  // направление взгляда задней камеры телефона = -Z в системе viewer -> в мир
+  const f=rotate([0,0,-1],o); const yaw=Math.atan2(-f[0], -f[2]);   // yaw вокруг мировой оси Y (вверх), 0 = взгляд вдоль -Z
+  const down=Math.asin(Math.max(-1,Math.min(1,-f[1])));              // насколько камера смотрит вниз (рад)
+  if(!follow){anchor=null; cmd.dx=cmd.dy=cmd.dz=cmd.dyaw=cmd.dpitch=0; return;}
+  if(!anchor){anchor={x:p.x,y:p.y,z:p.z,yaw,down,fwd:[Math.sin(yaw)*-1, 0, -Math.cos(yaw)]}; }
+  cmd.dpitch=down-anchor.down;                                        // наклонили ниже -> подход вертикальнее
+  // смещение телефона в мире -> в осях «вперёд/влево/вверх» на момент захвата
+  const dxw=p.x-anchor.x, dyw=p.y-anchor.y, dzw=p.z-anchor.z;
+  const fw=anchor.fwd; const left=[-fw[2],0,fw[0]];             // влево = up × fwd для y-вверх
+  cmd.dx=dxw*fw[0]+dzw*fw[2]; cmd.dy=dxw*left[0]+dzw*left[2]; cmd.dz=dyw;
+  let dy=yaw-anchor.yaw; while(dy>Math.PI)dy-=2*Math.PI; while(dy<-Math.PI)dy+=2*Math.PI; cmd.dyaw=dy;
+}
+function rotate(v,q){const {x,y,z,w}=q; const ix=w*v[0]+y*v[2]-z*v[1], iy=w*v[1]+z*v[0]-x*v[2], iz=w*v[2]+x*v[1]-y*v[0], iw=-x*v[0]-y*v[1]-z*v[2];
+  return [ix*w+iw*-x+iy*-z-iz*-y, iy*w+iw*-y+iz*-x-ix*-z, iz*w+iw*-z+ix*-y-iy*-x];}
+// подсветка границы — как на странице с джойстиком
+const ov=document.getElementById('glow'), ox=ov.getContext('2d');
+function drawBlocks(blocks, all){const w=ov.clientWidth, h=ov.clientHeight; if(!w||!h) return; if(ov.width!==w||ov.height!==h){ov.width=w;ov.height=h;}
+  ox.clearRect(0,0,w,h); const R=Math.hypot(w,h)/2, cx=w/2, cy=h/2;
+  if(all){const gr=ox.createRadialGradient(cx,cy,R*0.55,cx,cy,R); gr.addColorStop(0,'rgba(229,72,77,0)'); gr.addColorStop(1,'rgba(229,72,77,0.55)'); ox.fillStyle=gr; ox.fillRect(0,0,w,h);}
+  for(const b of blocks){const a=b.ang*Math.PI/180, px=cx+Math.cos(a)*R*1.05, py=cy-Math.sin(a)*R*1.05;
+    const gr=ox.createRadialGradient(px,py,0,px,py,R*0.95); gr.addColorStop(0,`rgba(229,72,77,${0.85*b.w})`); gr.addColorStop(0.55,`rgba(229,72,77,${0.35*b.w})`); gr.addColorStop(1,'rgba(229,72,77,0)'); ox.fillStyle=gr; ox.fillRect(0,0,w,h);}}
+</script></body></html>

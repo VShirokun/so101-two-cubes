@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SO-101 tilt teleop</title>
+<style>
+:root{--bg:#141618;--fg:#ecedea;--dim:#9aa0a6;--acc:#e0651f;--bad:#e5484d;--ok:#3fb950}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font:15px/1.3 -apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden;touch-action:none}
+#app{height:100dvh;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);display:grid;grid-template-rows:minmax(0,1fr) auto auto auto;gap:4px}
+.cam{position:relative;min-height:0;background:#000;border-radius:8px;margin:4px 4px 0;overflow:hidden}
+.cam img,.cam video{width:100%;height:100%;object-fit:contain;display:block}
+#glow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hud{position:absolute;left:8px;top:6px;font:11px ui-monospace,monospace;color:#ddd;background:rgba(0,0,0,.45);padding:2px 6px;border-radius:4px;max-width:85%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zbar{position:absolute;right:8px;top:8px;bottom:8px;width:10px;border-radius:5px;background:linear-gradient(to bottom,rgba(229,72,77,var(--up,0)),transparent 30%,transparent 70%,rgba(229,72,77,var(--down,0)));pointer-events:none}
+#dot{position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px;border-radius:50%;background:var(--acc);opacity:.85;pointer-events:none}
+#ring{position:absolute;left:50%;top:50%;width:120px;height:120px;margin:-60px;border-radius:50%;border:2px dashed rgba(255,255,255,.35);pointer-events:none}
+.row{display:flex;gap:10px;align-items:center;padding:4px 12px}
+.row input[type=range]{flex:1;height:44px;accent-color:var(--acc);margin:0}
+button{background:#2a2f34;color:var(--fg);border:0;border-radius:12px;padding:0 8px;font-size:clamp(14px,4vw,17px);font-weight:600;min-height:48px;flex:1;touch-action:none}
+button.on{background:var(--ok)}
+button.stop{background:var(--bad)}
+button.warn{box-shadow:inset 0 0 0 3px rgba(229,72,77,var(--w,0))}
+.small{font-size:12px;color:var(--dim);min-width:3em;text-align:right}
+#role,#rec{background:#2a2f34}
+#role.on{background:#2f6b3a}
+#rec.on{background:var(--bad)}
+
+</style></head><body><div id="app">
+<div class="cam"><video id="wimg" autoplay muted playsinline></video><canvas id="glow"></canvas><div id="ring"></div><div id="dot"></div><div class="hud" id="hud">…</div><div class="zbar" id="zbar"></div></div>
+<div class="row"><span class="small" style="text-align:left">схват</span><input id="grip" type="range" min="0" max="100" value="0"><span id="gv" class="small">0 %</span></div>
+<div class="row"><button class="hold warn" data-k="vz" data-v="1">▲ выше</button><button class="hold warn" data-k="vz" data-v="-1">▼ ниже</button><button id="follow">Следовать</button></div>
+<div class="row"><button id="home">Домой</button><button id="stop" class="stop">СТОП</button><button id="role">…</button><button id="rec">Запись</button><a href="/" style="flex:1"><button style="width:100%;background:#2a3a4a">Джойстик</button></a></div>
+</div>
+<script>
+const k=new URLSearchParams(location.search).get('k')||''; const q=k?('?k='+k):'';
+
+// видео: сначала WebRTC (низкая задержка), если за 4 с не соединилось — MJPEG
+async function startVideo(map){ // map: {wrist: <video|img element>, top: ...}
+  const fallback=()=>{for(const [cam,el] of Object.entries(map)){ if(el.tagName==='VIDEO'){const im=document.createElement('img'); im.alt=cam; im.style.cssText=el.style.cssText; im.className=el.className; im.id=el.id; el.replaceWith(im); im.src='/cam/'+cam+'.mjpg'+q;} else el.src='/cam/'+cam+'.mjpg'+q;} document.body.dataset.video='mjpeg';};
+  if(!window.RTCPeerConnection){fallback(); return;}
+  try{
+    const pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+    pc.addTransceiver('video',{direction:'recvonly'}); pc.addTransceiver('video',{direction:'recvonly'});
+    const els=[map.wrist,map.top]; let i=0;
+    pc.ontrack=ev=>{const el=els[i++]; if(el&&el.tagName==='VIDEO'){el.srcObject=new MediaStream([ev.track]); el.play().catch(()=>{});}};
+    const offer=await pc.createOffer(); await pc.setLocalDescription(offer);
+    await new Promise(r=>{if(pc.iceGatheringState==='complete')r(); else{pc.onicegatheringstatechange=()=>{if(pc.iceGatheringState==='complete')r();}; setTimeout(r,1500);}});
+    const resp=await fetch('/rtc/offer'+q,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sdp:pc.localDescription.sdp,type:pc.localDescription.type})});
+    if(!resp.ok) throw new Error('offer '+resp.status);
+    await pc.setRemoteDescription(await resp.json());
+    const ok=await new Promise(r=>{const t=setTimeout(()=>r(false),4000); pc.onconnectionstatechange=()=>{if(pc.connectionState==='connected'){clearTimeout(t);r(true);} if(['failed','closed'].includes(pc.connectionState)){clearTimeout(t);r(false);}};});
+    if(!ok){pc.close(); fallback();} else document.body.dataset.video='webrtc';
+  }catch(e){fallback();}
+}
+startVideo({wrist:document.getElementById('wimg')});
+const cmd={vx:0,vy:0,vz:0,wyaw:0,grip:null}; let ws, latest=null, stopped=false, follow=false, ref=null, cur={beta:0,gamma:0,yaw:0};
+const DEAD=4, SAT=22;   // градусы наклона: мёртвая зона и насыщение
+function connect(){ws=new WebSocket((location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws'+q);
+  ws.onmessage=e=>{const s=JSON.parse(e.data); latest=s;
+    document.getElementById('hud').textContent=`${s.tcp[0]} ${s.tcp[1]} ${s.tcp[2]} м · yaw ${s.yaw_deg}° · ${s.alive?'связь':'НЕТ СВЯЗИ'}${s.stop?' · СТОП':''}${s.msg?' · '+s.msg:''}`;
+    drawBlocks(s.blocks||[], s.limits&&s.limits.ik&&!(s.blocks||[]).length);
+    const z=document.getElementById('zbar'); z.style.setProperty('--up',s.up||0); z.style.setProperty('--down',s.down||0);
+    document.querySelector('[data-k="vz"][data-v="1"]').style.setProperty('--w',s.up||0); document.querySelector('[data-k="vz"][data-v="-1"]').style.setProperty('--w',s.down||0);
+    stopped=s.stop; document.getElementById('stop').textContent=stopped?'Продолжить':'СТОП'; applyRole(s);};
+  ws.onclose=()=>setTimeout(connect,1000);}
+connect();
+setInterval(()=>{ // наклон -> скорость в осях кадра; компас -> поворот губок (П-регулятор к желаемому yaw)
+  if(follow&&ref){const n=v=>{const a=Math.abs(v)<DEAD?0:Math.sign(v)*Math.min(1,(Math.abs(v)-DEAD)/(SAT-DEAD)); return a;};
+    cmd.vy=n(ref.beta-cur.beta);          // наклонить от себя (beta уменьшается) -> вглубь кадра
+    cmd.vx=n(cur.gamma-ref.gamma);        // наклонить вправо -> вправо в кадре
+    if(latest){let want=ref.yawTarget+wrap(cur.yaw-ref.yaw); let err=wrap(want-latest.yaw_deg*Math.PI/180); cmd.wyaw=Math.max(-1,Math.min(1,2.5*err));}
+    document.getElementById('dot').style.transform=`translate(${cmd.vx*60}px,${-cmd.vy*60}px)`;
+  } else {cmd.vx=cmd.vy=cmd.wyaw=0; document.getElementById('dot').style.transform='';}
+  if(ws&&ws.readyState===1){ws.send(JSON.stringify(cmd)); cmd.grip=null;}},50);
+function wrap(a){while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a;}
+function onOrient(e){ // iOS: webkitCompassHeading (0 = север, по часовой); иначе alpha
+  const yawDeg=(e.webkitCompassHeading!=null)?-e.webkitCompassHeading:(e.alpha||0);
+  cur={beta:e.beta||0,gamma:e.gamma||0,yaw:yawDeg*Math.PI/180};}
+async function enable(){
+  if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+    try{const r=await DeviceOrientationEvent.requestPermission(); if(r!=='granted'){alert('Нет доступа к датчикам движения'); return false;}}catch(e){alert('Датчики: '+e.message); return false;}}
+  window.addEventListener('deviceorientation',onOrient,true); return true;}
+document.getElementById('follow').onclick=async()=>{
+  if(!follow){ if(!(await enable())) return; follow=true; ref={beta:cur.beta,gamma:cur.gamma,yaw:cur.yaw,yawTarget:latest?latest.yaw_deg*Math.PI/180:0}; }
+  else follow=false;
+  document.getElementById('follow').classList.toggle('on',follow); document.getElementById('follow').textContent=follow?'Следую':'Следовать';};
+document.querySelectorAll('.hold').forEach(b=>{const kk=b.dataset.k, v=+b.dataset.v; const on=e=>{e.preventDefault(); cmd[kk]=v;}, off=()=>{cmd[kk]=0;};
+  b.addEventListener('pointerdown',on); b.addEventListener('pointerup',off); b.addEventListener('pointercancel',off); b.addEventListener('pointerleave',off);});
+const g=document.getElementById('grip'); g.addEventListener('input',()=>{cmd.grip=g.value/100; document.getElementById('gv').textContent=g.value+' %';});
+
+// роль оператора и запись демонстраций (общее для всех страниц)
+let myRole='viewer', recOn=false;
+function applyRole(s){myRole=s.role||'viewer'; recOn=!!s.rec;
+  const rb=document.getElementById('role'); if(rb){rb.textContent=myRole==='controller'?'управляю':'смотрю'; rb.classList.toggle('on',myRole==='controller');}
+  const rc=document.getElementById('rec'); if(rc){rc.textContent=recOn?('● '+s.rec.ep+' '+s.rec.sec+'с'):'Запись'; rc.classList.toggle('on',recOn);}}
+function bindRoleRec(){const rb=document.getElementById('role'), rc=document.getElementById('rec');
+  if(rb) rb.onclick=()=>{if(myRole!=='controller') ws.send(JSON.stringify({cmd:'take'}));};
+  if(rc) rc.onclick=()=>ws.send(JSON.stringify(recOn?{cmd:'rec_stop',success:true}:{cmd:'rec_start',task:'teleop'}));}
+bindRoleRec();
+document.getElementById('stop').onclick=()=>ws.send(JSON.stringify({cmd:stopped?'resume':'stop'}));
+document.getElementById('home').onclick=()=>{follow=false; document.getElementById('follow').classList.remove('on'); document.getElementById('follow').textContent='Следовать'; ws.send(JSON.stringify({cmd:'home'}));};
+const ov=document.getElementById('glow'), ox=ov.getContext('2d');
+function drawBlocks(blocks, all){const w=ov.clientWidth, h=ov.clientHeight; if(!w||!h) return; if(ov.width!==w||ov.height!==h){ov.width=w;ov.height=h;}
+  ox.clearRect(0,0,w,h); const R=Math.hypot(w,h)/2, cx=w/2, cy=h/2;
+  if(all){const gr=ox.createRadialGradient(cx,cy,R*0.55,cx,cy,R); gr.addColorStop(0,'rgba(229,72,77,0)'); gr.addColorStop(1,'rgba(229,72,77,0.55)'); ox.fillStyle=gr; ox.fillRect(0,0,w,h);}
+  for(const b of blocks){const a=b.ang*Math.PI/180, px=cx+Math.cos(a)*R*1.05, py=cy-Math.sin(a)*R*1.05;
+    const gr=ox.createRadialGradient(px,py,0,px,py,R*0.95); gr.addColorStop(0,`rgba(229,72,77,${0.85*b.w})`); gr.addColorStop(0.55,`rgba(229,72,77,${0.35*b.w})`); gr.addColorStop(1,'rgba(229,72,77,0)'); ox.fillStyle=gr; ox.fillRect(0,0,w,h);}}
+</script></body></html>

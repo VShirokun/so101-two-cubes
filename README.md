@@ -56,6 +56,14 @@ Two 3D-printed 28 mm cubes with ArUco markers on all six faces are both the obje
 </tr>
 </table>
 
+
+## Teleoperation from a phone (new)
+
+<table><tr>
+<td width="50%" valign="top"><b>Web joystick, AR and tilt modes.</b> <code>real/teleop/web_teleop.py</code> serves a phone page with both cameras (WebRTC, MJPEG fallback), two joysticks (motion in the wrist-camera frame; gripper yaw and approach pitch), a gripper slider and a directional boundary glow that reddens the edge you can no longer move towards. <code>/xr</code> uses WebXR on Android: the phone pose drives the gripper 1:1 (position, yaw, pitch); <code>/tilt</code> is the iPhone fallback on device orientation; <code>real/teleop/ios/GripperAR</code> is a native ARKit app speaking the same WebSocket protocol.</td>
+<td width="50%" valign="top"><b>Safety and data.</b> Every command goes through the same IK, floor guard, reach limits, self-collision check and 0.5 s deadman as the autonomous collector. One operator at a time (others watch, takeover by button, release after 30 s of silence, safe disconnect). A record button writes the session as collector-format episodes, ready for <code>pilot_to_lift_v21.py</code>. No public IP needed: a supervised Cloudflare quick tunnel publishes its current address.</td>
+</tr></table>
+
 ## Keeping a wobbly rig honest
 
 <table>
@@ -82,7 +90,7 @@ Two 3D-printed 28 mm cubes with ArUco markers on all six faces are both the obje
 - Real policy, lift task, 5-attempt runs: 1–3 of 5 lifts by video, 1 of 5 by the strict wrist-marker criterion. Typical miss: fingers close 2–3 cm beside the cube.
 - Hybrid (policy approaches, algorithm grasps): 2 of 5 on the first run.
 - Evaluation noise is ±2.3 pp per 100 attempts; an improvement is claimed only on 1200 attempts over two seed sets (`ml/gr00t/README.md`).
-- Recolouring still leaves artefacts at cube edges and around the wrist-camera housing.
+- Recolouring v5 removed the dark marker remnants on the held cube (dark fraction inside the cube 0.041 → 0.001); a side face seen at a grazing angle in the top camera can still be partly unpainted.
 - Every decision and deviation: `ml/gr00t/DEVIATIONS.md`, `docs/visual-evidence.md`, `docs/real-rig-handoff.md`.
 
 ## Reproduce

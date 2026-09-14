@@ -123,6 +123,20 @@ def recolor_frame(img: np.ndarray, K: np.ndarray, T_wc: np.ndarray,
         # выходит за него. Связная тёмная область, выходящая за силуэт, — не куб.
         side = max(np.sqrt(a) for *_, a in faces_px)
         cell = max(2, int(side / N))
+        # спроецированные чёрные клетки всех видимых граней (с запасом на ошибку
+        # позы): внутри них тёмное — метка по определению, а не чужой предмет.
+        # Без этого на близком кубе слившиеся клетки середины метки попадали под
+        # правило «далеко от белого», а клетки у провода — под «выходит за силуэт»,
+        # и оставались чёрными пятнами (артефакты v4, 10.09.2026)
+        black_all = np.zeros((H, W), np.uint8)
+        for fi, poly, area in faces_px:
+            hmg0 = cv2.getPerspectiveTransform(np.array([[0, 0], [N, 0], [N, N], [0, N]], np.float32), poly)
+            ys0, xs0 = np.nonzero(cube["bits"][fi])
+            for gy, gx in zip(ys0, xs0):
+                cpx = cv2.perspectiveTransform(np.array([[[gx, gy], [gx + 1, gy], [gx + 1, gy + 1], [gx, gy + 1]]], np.float32), hmg0)[0]
+                cv2.fillConvexPoly(black_all, np.round(cpx).astype(np.int32), 1)
+        r_all = max(1, int(side * BLACK_DILATE_FRAC))
+        black_all = cv2.dilate(black_all, np.ones((2 * r_all + 1, 2 * r_all + 1), np.uint8)) > 0
         v_pre = v_ref if v_ref is not None else (
             float(np.percentile(v_chan[base_px], 80)) if base_px.sum() >= 4 else 255.0)
         dark = (v_chan < DARK_FRAC * v_pre).astype(np.uint8)
@@ -145,6 +159,7 @@ def recolor_frame(img: np.ndarray, K: np.ndarray, T_wc: np.ndarray,
         white = base_px & (v_chan > 0.75 * v_pre) & (hsv[:, :, 1] < 90)
         far = cv2.distanceTransform((~white).astype(np.uint8), cv2.DIST_L2, 3) > 2 * cell
         dark_occ |= (dark > 0) & far
+        dark_occ &= ~black_all           # клетки меток — куб, даже если далеко от белого или у провода
         cube_px = base_px & ~dark_occ
         allowed |= cube_px
         DEBUG.update(dark=dark > 0, white=white, far=far, dark_occ=dark_occ,
